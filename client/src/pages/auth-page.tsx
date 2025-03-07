@@ -29,6 +29,14 @@ const loginSchema = insertUserSchema.pick({
   password: true,
 });
 
+// Extend the registration schema to include password confirmation
+const registerSchema = insertUserSchema.extend({
+  confirmPassword: z.string(),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ["confirmPassword"],
+});
+
 export default function AuthPage() {
   const { user, loginMutation, registerMutation } = useAuth();
 
@@ -40,11 +48,12 @@ export default function AuthPage() {
     },
   });
 
-  const registerForm = useForm<z.infer<typeof insertUserSchema>>({
-    resolver: zodResolver(insertUserSchema),
+  const registerForm = useForm<z.infer<typeof registerSchema>>({
+    resolver: zodResolver(registerSchema),
     defaultValues: {
       username: "",
       password: "",
+      confirmPassword: "",
       name: "",
       type: "entrepreneur",
       bio: "",
@@ -61,8 +70,16 @@ export default function AuthPage() {
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-2">
       <div className="flex items-center justify-center p-8">
         <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>Welcome to Investo</CardTitle>
+          <CardHeader className="text-center">
+            <div className="flex flex-col items-center space-y-2 mb-4">
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+                Investo
+              </h1>
+              <p className="text-sm text-muted-foreground">
+                Connect • Innovate • Grow
+              </p>
+            </div>
+            <CardTitle>Welcome Back</CardTitle>
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="login">
@@ -119,9 +136,10 @@ export default function AuthPage() {
               <TabsContent value="register">
                 <Form {...registerForm}>
                   <form
-                    onSubmit={registerForm.handleSubmit((data) =>
-                      registerMutation.mutate(data)
-                    )}
+                    onSubmit={registerForm.handleSubmit((data) => {
+                      const { confirmPassword, ...registerData } = data;
+                      registerMutation.mutate(registerData);
+                    })}
                     className="space-y-4"
                   >
                     <FormField
@@ -143,6 +161,19 @@ export default function AuthPage() {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Password</FormLabel>
+                          <FormControl>
+                            <Input type="password" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={registerForm.control}
+                      name="confirmPassword"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Confirm Password</FormLabel>
                           <FormControl>
                             <Input type="password" {...field} />
                           </FormControl>
