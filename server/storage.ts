@@ -36,6 +36,61 @@ export class MemStorage implements IStorage {
     this.sessionStore = new MemoryStore({
       checkPeriod: 86400000,
     });
+
+    // Add demo users
+    const demoUsers: InsertUser[] = [
+      {
+        username: "tech_investor",
+        password: "password123",
+        type: "investor",
+        name: "Sarah Johnson",
+        bio: "Experienced tech investor with a focus on AI and SaaS startups. Looking for innovative solutions in enterprise software.",
+        interests: ["Artificial Intelligence", "SaaS", "Enterprise Software"],
+        expertise: ["Venture Capital", "Tech Scaling", "B2B Software"]
+      },
+      {
+        username: "green_investor",
+        password: "password123",
+        type: "investor",
+        name: "Michael Chen",
+        bio: "Impact investor focused on sustainable technology and clean energy solutions. Passionate about environmental innovation.",
+        interests: ["Clean Energy", "Sustainability", "GreenTech"],
+        expertise: ["Renewable Energy", "ESG Investing", "CleanTech"]
+      },
+      {
+        username: "ai_startup",
+        password: "password123",
+        type: "entrepreneur",
+        name: "Alex Rivera",
+        bio: "Building an AI-powered customer service automation platform. Looking for Series A funding and strategic partnerships.",
+        interests: ["AI/ML", "Customer Service", "Enterprise Software"],
+        expertise: ["Machine Learning", "Product Development"]
+      },
+      {
+        username: "eco_innovator",
+        password: "password123",
+        type: "entrepreneur",
+        name: "Emma Wilson",
+        bio: "Developing biodegradable packaging solutions for e-commerce. Seeking seed funding and industry connections.",
+        interests: ["Sustainable Packaging", "E-commerce", "Green Manufacturing"],
+        expertise: ["Material Science", "Sustainability"]
+      },
+      {
+        username: "health_investor",
+        password: "password123",
+        type: "investor",
+        name: "Dr. James Lee",
+        bio: "Healthcare-focused investor with expertise in digital health and biotech. Looking for innovative healthcare solutions.",
+        interests: ["Digital Health", "Biotech", "Healthcare IT"],
+        expertise: ["Healthcare", "Medical Devices", "Biotech Ventures"]
+      }
+    ];
+
+    // Initialize demo users
+    demoUsers.forEach(user => {
+      const id = this.currentId.users++;
+      this.users.set(id, { ...user, id });
+    });
   }
 
   async getUser(id: number): Promise<User | undefined> {
