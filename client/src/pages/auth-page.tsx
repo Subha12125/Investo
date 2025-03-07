@@ -72,10 +72,10 @@ export default function AuthPage() {
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
             <div className="flex flex-col items-center space-y-2 mb-4">
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+              <h1 className="text-5xl font-extrabold bg-gradient-to-r from-blue-500 via-blue-400 to-blue-300 bg-clip-text text-transparent animate-gradient">
                 Investo
               </h1>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-muted-foreground font-medium tracking-wide">
                 Connect • Innovate • Grow
               </p>
             </div>
