@@ -62,7 +62,7 @@ export default function AuthPage() {
       <div className="flex items-center justify-center p-8">
         <Card className="w-full max-w-md">
           <CardHeader>
-            <CardTitle>Welcome to VentureConnect</CardTitle>
+            <CardTitle>Welcome to Investo</CardTitle>
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="login">
@@ -217,7 +217,7 @@ export default function AuthPage() {
               Connect with the Right People
             </h1>
             <p className="text-lg">
-              VentureConnect helps entrepreneurs and investors build meaningful
+              Investo helps entrepreneurs and investors build meaningful
               relationships and grow together.
             </p>
           </div>

@@ -8,10 +8,12 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
-import { Home, MessageSquare, Newspaper, User } from "lucide-react";
+import { Home, MessageSquare, Newspaper, User, Moon, Sun } from "lucide-react";
+import { useTheme } from "@/hooks/use-theme";
 
 export default function Navbar() {
   const { user, logoutMutation } = useAuth();
+  const { theme, setTheme } = useTheme();
 
   if (!user) return null;
 
@@ -24,7 +26,7 @@ export default function Navbar() {
               <Link href="/">
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                   <Home className="mr-2 h-4 w-4" />
-                  Home
+                  Investo
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
@@ -48,6 +50,17 @@ export default function Navbar() {
         </NavigationMenu>
 
         <div className="ml-auto flex items-center space-x-4">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+          >
+            {theme === "dark" ? (
+              <Sun className="h-5 w-5" />
+            ) : (
+              <Moon className="h-5 w-5" />
+            )}
+          </Button>
           <Link href="/profile">
             <Button variant="ghost">
               <User className="mr-2 h-4 w-4" />
