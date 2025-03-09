@@ -1,6 +1,15 @@
+import 'dotenv/config';
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+
+if (!process.env.DATABASE_URL) {
+  throw new Error("DATABASE_URL is not set in environment variables");
+}
+
+if (!process.env.SESSION_SECRET) {
+  throw new Error("SESSION_SECRET is not set in environment variables");
+}
 
 const app = express();
 app.use(express.json());
@@ -47,17 +56,12 @@ app.use((req, res, next) => {
     throw err;
   });
 
-  // importantly only setup vite in development and after
-  // setting up all the other routes so the catch-all route
-  // doesn't interfere with the other routes
   if (app.get("env") === "development") {
     await setupVite(app, server);
   } else {
     serveStatic(app);
   }
 
-  // ALWAYS serve the app on port 5000
-  // this serves both the API and the client
   const port = 5000;
   server.listen({
     port,
@@ -65,5 +69,8 @@ app.use((req, res, next) => {
     reusePort: true,
   }, () => {
     log(`serving on port ${port}`);
+    log('Environment variables loaded:');
+    log(`DATABASE_URL is ${process.env.DATABASE_URL ? 'set' : 'not set'}`);
+    log(`SESSION_SECRET is ${process.env.SESSION_SECRET ? 'set' : 'not set'}`);
   });
 })();
